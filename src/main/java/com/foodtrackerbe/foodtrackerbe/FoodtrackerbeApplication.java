@@ -23,7 +23,7 @@ public class FoodtrackerbeApplication implements CommandLineRunner {
 
 	void runJdbc() {
 		// jdbcTemplate.execute("CREATE TABLE dbo.FoodInfo2(FdcId int NULL)");
-		// jdbcTemplate.execute("DROP TABLE dbo.FoodInfo2");
+		jdbcTemplate.execute("DROP TABLE dbo.FoodInfo2");
 	}
 
 }
