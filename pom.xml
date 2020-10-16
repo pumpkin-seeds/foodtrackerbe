@@ -35,6 +35,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- JDBC Maven dependency -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+				
+		<!-- sql server driver in order to access MS sql -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
