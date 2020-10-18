@@ -1,7 +1,6 @@
 package com.foodtrackerbe.foodtrackerbe;
 
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,18 +17,18 @@ public class FoodInfoDaoImpl implements FoodInfoDao<FoodInfo> {
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public int getCount(int id) {
-        String sql = "SELECT * FROM FoodInfo";
-        List<Map<String, Object>> res = jdbcTemplate.queryForList(sql);
-        return res.size();
-    }
-
-    @Override
     public List<FoodInfo> getFoodNutritions(int id) {
-        log.info("Getting Food Info where food id is:" + id);
+        log.info("Getting Food Info where food id is: {}", id);
         List<FoodInfo> res = jdbcTemplate.query("SELECT * From FoodInfo WHERE FdcId = '" + id + "';",
                 new FoodInfoRowMapper());
         return res;
+    }
 
+    @Override
+    public List<FoodInfo> searchFoodByName(String name) {
+        log.info("Getting Food Info where food name contains: {}", name);
+        List<FoodInfo> res = jdbcTemplate.query("SELECT * From FoodInfo WHERE FoodDescription LIKE '%" + name + "%';",
+                new FoodInfoRowMapper());
+        return res;
     }
 }
