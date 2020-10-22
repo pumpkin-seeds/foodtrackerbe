@@ -26,10 +26,14 @@ public class UserInfoDaoImpl implements UserInfoDao {
     public List<UserInfo> getUserInfo(LocalDate date, String userId) {
         Date sqlDate = Date.valueOf(date);
         log.info("Getting user info given date of {} and userId of {}", sqlDate, userId);
-        List<UserInfo> res = jdbcTemplate.query(
+        try {
+            List<UserInfo> res = jdbcTemplate.query(
                 "SELECT * From UserRecord WHERE RecordDate = '" + date + "' AND UserId = '" + userId + "';",
                 new UserInfoRowMapper());
-        return res;
+            return res;
+        } catch (Exception e) {
+            throw new RuntimeException("Failure when connecting to DB. Check the service log for more details.");
+        }
     }
 
     // Save a list of user info to DB
@@ -38,16 +42,20 @@ public class UserInfoDaoImpl implements UserInfoDao {
         if (list.size() == 0)
             return;
         Date sqlDate = Date.valueOf(list.get(0).getRecordDate());
-        // First delete old record if any
-        jdbcTemplate.update("DELETE FROM UserRecord WHERE RecordDate = ? AND UserId = ?;", sqlDate,
-                list.get(0).getUserId());
-        for (UserInfo info : list) {
-            log.info("Saving user info: date of {}; userId of {}; foodId of {}; quantity of {};", sqlDate,
-                    info.getUserId(), info.getFoodId(), info.getQuantity());
-            // Insert new record for a user and a date
-            jdbcTemplate.update("INSERT INTO UserRecord (UserId, RecordDate, FdcId, Quantity) VALUES (?, ?, ?, ?)",
-                    info.getUserId(), sqlDate, info.getFoodId(), info.getQuantity());
+
+        try {
+            // First delete old record if any
+            jdbcTemplate.update("DELETE FROM UserRecord WHERE RecordDate = ? AND UserId = ?;", sqlDate,
+                    list.get(0).getUserId());
+            for (UserInfo info : list) {
+                log.info("Saving user info: date of {}; userId of {}; foodId of {}; quantity of {};", sqlDate,
+                        info.getUserId(), info.getFoodId(), info.getQuantity());
+                // Insert new record for a user and a date
+                jdbcTemplate.update("INSERT INTO UserRecord (UserId, RecordDate, FdcId, Quantity) VALUES (?, ?, ?, ?)",
+                        info.getUserId(), sqlDate, info.getFoodId(), info.getQuantity());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failure when connecting to DB. Check the service log for more details.");
         }
     }
-
 }
