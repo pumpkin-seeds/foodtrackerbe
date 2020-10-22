@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service(value = "foodService")
 public class FoodServiceImpl implements FoodService<FoodInfo> {
 
-    private static final Logger log = LoggerFactory.getLogger(FoodInfoDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(FoodServiceImpl.class);
 
     @Autowired
     FoodInfoDaoImpl foodInfoDao;
@@ -26,8 +26,7 @@ public class FoodServiceImpl implements FoodService<FoodInfo> {
     @Override
     public List<FoodInfo> searchFoodByName(String name) {
         log.info("Getting a list of food given food name: {}", name);
-        // TODO: optimize search results for fe (limit result numbers, sort by
-        // priorities, etc)
+        // TODO: optimize search results for fe
         return foodInfoDao.searchFoodByName(name);
     }
 }
