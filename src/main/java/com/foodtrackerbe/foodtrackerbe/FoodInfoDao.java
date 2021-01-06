@@ -7,4 +7,6 @@ public interface FoodInfoDao<T> {
     List<T> getFoodNutritions(int id);
 
     List<T> searchFoodByName(String name);
+
+    List<T> getCommonFoods(String userId, int topN);
 }
