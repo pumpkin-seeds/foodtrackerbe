@@ -19,16 +19,24 @@ public class FoodInfoDaoImpl implements FoodInfoDao<FoodInfo> {
     @Override
     public List<FoodInfo> getFoodNutritions(int id) {
         log.info("Getting Food Info where food id is: {}", id);
-        List<FoodInfo> res = jdbcTemplate.query("SELECT * From FoodInfo WHERE FdcId = '" + id + "';",
-                new FoodInfoRowMapper());
-        return res;
+        try {
+            List<FoodInfo> res = jdbcTemplate.query("SELECT * From FoodInfo WHERE FdcId = '" + id + "';",
+            new FoodInfoRowMapper());
+            return res;
+        } catch (Exception e) {
+            throw new RuntimeException("Failure when connecting to DB. Check the service log for more details.");
+        }
     }
 
     @Override
     public List<FoodInfo> searchFoodByName(String name) {
         log.info("Getting Food Info where food name contains: {}", name);
-        List<FoodInfo> res = jdbcTemplate.query("SELECT * From FoodInfo WHERE FoodDescription LIKE '%" + name + "%';",
-                new FoodInfoRowMapper());
-        return res;
+        try {
+            List<FoodInfo> res = jdbcTemplate.query("SELECT * From FoodInfo WHERE FoodDescription LIKE '%" + name + "%';",
+                    new FoodInfoRowMapper());
+            return res;
+        } catch (Exception e) {
+            throw new RuntimeException("Failure when connecting to DB. Check the service log for more details.");
+        }
     }
 }
