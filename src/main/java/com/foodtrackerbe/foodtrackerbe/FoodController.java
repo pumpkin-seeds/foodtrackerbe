@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 // @CrossOrigin(origins =
 // "http://food-tracker-fe-dev.s3-website.us-east-2.amazonaws.com", maxAge =
 // 3600)
-// testing branching
 @RestController
 public class FoodController {
 
@@ -39,6 +38,13 @@ public class FoodController {
             return foodService.searchFoodByName(name);
         }
         return new ArrayList<FoodInfo>();
+    }
+
+    // example: /userpreference?userId=johnpark&topN=3
+    // get the most common food consumed by a user given a user id
+    @RequestMapping(value = "/userpreference", method = RequestMethod.GET)
+    public List<FoodInfo> getCommonFoods(@RequestParam String userId, int topN) {
+        return foodService.getCommonFoods(userId, topN);
     }
 
     // example: /userrecord?date=2020-10-20&userId=johnpark

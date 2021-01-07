@@ -26,7 +26,13 @@ public class FoodServiceImpl implements FoodService<FoodInfo> {
     @Override
     public List<FoodInfo> searchFoodByName(String name) {
         log.info("Getting a list of food given food name: {}", name);
-        // TODO: optimize search results for fe
         return foodInfoDao.searchFoodByName(name);
+    }
+
+    // Get common food consumed by a user given a user id
+    @Override
+    public List<FoodInfo> getCommonFoods(String userId, int topN) {
+        log.info("Getting a list of food commonly consumed by user id: {}", userId);
+        return foodInfoDao.getCommonFoods(userId, topN);
     }
 }

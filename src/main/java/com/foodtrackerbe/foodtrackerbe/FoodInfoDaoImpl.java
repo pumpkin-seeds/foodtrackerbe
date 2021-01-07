@@ -39,4 +39,18 @@ public class FoodInfoDaoImpl implements FoodInfoDao<FoodInfo> {
             throw new RuntimeException("Failure when connecting to DB. Check the service log for more details.");
         }
     }
+
+    @Override
+    public List<FoodInfo> getCommonFoods(String userId, int topN) {
+        log.info("Getting Common Food comsumed by user id: {}", userId);
+        try {
+            List<FoodInfo> foodRes = jdbcTemplate
+                    .query("SELECT * FROM UsdaFoodDB.dbo.FoodInfo WHERE FdcId IN (SELECT TOP " + topN
+                            + " FdcId FROM UsdaFoodDB.dbo.UserRecord WHERE UserId ='" + userId
+                            + "' GROUP BY FdcId ORDER BY COUNT(FdcId) DESC);", new FoodInfoRowMapper());
+            return foodRes;
+        } catch (Exception e) {
+            throw new RuntimeException("Failure when connecting to DB. Check the service log for more details.");
+        }
+    }
 }
