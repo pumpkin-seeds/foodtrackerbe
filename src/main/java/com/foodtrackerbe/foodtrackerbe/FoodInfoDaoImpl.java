@@ -45,7 +45,8 @@ public class FoodInfoDaoImpl implements FoodInfoDao<FoodInfo> {
         log.info("Getting Common Food comsumed by user id: {}", userId);
         try {
             List<FoodInfo> foodRes = jdbcTemplate
-                    .query("SELECT * FROM UsdaFoodDB.dbo.FoodInfo WHERE FdcId IN (SELECT TOP " + topN
+                    .query("SELECT DISTINCT [FdcId],[FoodDescription],'' AS [ServingSize], 0 AS [NutrientId],'' AS [NutritionName], 0 AS [NutrientAmount] FROM UsdaFoodDB.dbo.FoodInfo WHERE FdcId IN (SELECT TOP "
+                            + topN
                             + " FdcId FROM UsdaFoodDB.dbo.UserRecord WHERE UserId ='" + userId
                             + "' GROUP BY FdcId ORDER BY COUNT(FdcId) DESC);", new FoodInfoRowMapper());
             return foodRes;
